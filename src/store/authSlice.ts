@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-interface AuthState {
+export interface AuthState {
   token: string | null;
   loading: boolean;
   error: string | null;
@@ -18,7 +18,7 @@ export const loginUser = createAsyncThunk(
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
     try {
       const response = await axios.post<{ access_token: string }>(
-        'localhost:3000/task_management/api/v1/auth/login',
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
         credentials,
       );
       return response.data.access_token;
