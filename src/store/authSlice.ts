@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export interface AuthState {
   token: string | null;
@@ -8,7 +9,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  token: null,
+  token: Cookies.get('token') || null,
   loading: false,
   error: null,
 };
@@ -35,7 +36,7 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.token = null;
-      localStorage.removeItem('token');
+      Cookies.remove('token');
     },
   },
   extraReducers: (builder) => {
@@ -47,7 +48,7 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<string>) => {
         state.loading = false;
         state.token = action.payload;
-        localStorage.setItem('token', action.payload);
+        Cookies.set('token', action.payload, { expires: 7 });
       })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .addCase(loginUser.rejected, (state, action: PayloadAction<any>) => {

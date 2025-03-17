@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function LoginPage() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { error, loading, token } = useSelector((state: RootState) => state.auth);
+  const { error, loading } = useSelector((state: RootState) => state.auth);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
